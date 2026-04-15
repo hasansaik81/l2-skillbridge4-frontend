@@ -27,147 +27,109 @@ import {
 } from "@/components/ui/sidebar"
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
+
+  
+  const ADMIN_navMain=[
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
+      title: "Admin Dash",
+      url: "#",
+      icon: "SquareTerminal",
+      isActive: "true",
+      
+      items:[
+     {
+      title: "History",
       logo: AudioWaveform,
-      plan: "Startup",
+     
     },
     {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      title: "Starred",
+        url: "#",
+    },
+    {
+       title: "Settings",
+        url: "#",
     },
   ],
-  navMain: [
+},
+];
+  
+  const TUTOR_navMain=[
     {
-      title: "Playground",
+      title: "Tutor Dash",
       url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
+      icon: "SquareTerminal",
+      isActive: "true",
+      
+      items:[
+     {
+      title: "History",
+        url: "#",
     },
     {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
+    title: "Starred",
+        url: "#",
     },
     {
       title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
+        url: "#",
     },
   ],
-  projects: [
+},
+];
+  
+  const STUDENT_navMain=[
     {
-      name: "Design Engineering",
+      title: "Student Dash",
       url: "#",
-      icon: Frame,
+      icon: "SquareTerminal",
+      isActive: "true",
+      
+      items:[
+    {    
+     title: "History",
+        url: "#",
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
+      title: "Starred",
+        url: "#",
     },
     {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+     title: "Settings",
+        url: "#",
     },
   ],
+},
+];
+  
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+    userRole:"ADMIN" | "TUTOR" | "STUDENT"  
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+export function AppSidebar({userRole, ...props }: AppSidebarProps) {
+  
+  let naVItem=null;
+   if(userRole === "ADMIN"){
+    naVItem=ADMIN_navMain
+   }else if(userRole === "TUTOR"){
+    naVItem=TUTOR_navMain
+   }else{
+    naVItem=STUDENT_navMain
+   }
+   
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        {/* <TeamSwitcher teams={data.teams} /> */}
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={naVItem! } />
+        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {/* <NavUser user={data.user} /> */}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

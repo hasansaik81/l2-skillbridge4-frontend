@@ -13,8 +13,9 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { getUser } from "@/services/auth";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     admin ,
     student,
     tutor
@@ -24,10 +25,10 @@ export default function DashboardLayout({
     tutor:React.ReactNode;
 }) {
     
-
+const user = await getUser();
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar userRole={user.role} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
@@ -53,10 +54,10 @@ export default function DashboardLayout({
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-          {admin}
-          {student}
-          {tutor}
+          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+          { user.role === "admin" && admin }
+          { user.role === "student" && student }
+          { user.role === "tutor" && tutor }
           <div/>
         </div>
       </SidebarInset>
