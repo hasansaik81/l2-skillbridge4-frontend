@@ -1,4 +1,7 @@
-// import { cookies } from "next/headers";
+
+"use server";
+import { jwtDecode } from "jwt-decode";
+import { cookies } from "next/dist/server/request/cookies";
 import { FieldValues } from "react-hook-form";
 
 export const loginUser=async(userData:FieldValues)=>{
@@ -8,22 +11,38 @@ export const loginUser=async(userData:FieldValues)=>{
             headers:{
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body:JSON.stringify(userData),
         });
+        
         const result= await res.json()
-        // const storeCookie= await cookies();
-        // if(result.success){
-        //     storeCookie.set("token",result?.data?.toke);
-        // }
-   
+        const storeCookie= await cookies();
+        if(result.success){
+            storeCookie.set("token",result?.data?.token)};
         return result;
     }catch(error){
       console.log(error)
     }
 }
 
-// export const getUser=async()=>{
-//     const storeCookie= await cookies();
-//     const token=storeCookie.get("token")?.value;
-//     console.log(token)
-// };
+export const getUser=async()=>{
+  const storeCookie=await cookies();
+  const token=storeCookie.get("token")?.value;
+  
+  let decodedData=null;
+  if(token){
+    decodedData= await jwtDecode(token);
+    return decodedData;
+  }else{
+    return null
+  }
+}
+
+
+export const UserLogOut=async()=>{
+  const storeCookie=await cookies();
+  storeCookie.delete("token");
+  
+}
+
+

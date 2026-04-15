@@ -1,79 +1,3 @@
-// "use client"
-// import Link from "next/link";
-// import { useState } from "react";
-// import { Menu, X } from "lucide-react"; // Shadcn Icons
-// import { Button } from "@/components/ui/button"; // Shadcn button
-
-// export const Navbar = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-
-//   const navigation = [
-//     { name: "Home", href: "/" },
-//     { name: "Services", href: "/services" },
-//     { name: "About", href: "/about-us" },
-//     { name: "Contact", href: "/contact" },
-//   ];
-
-//   return (
-//     <nav className="bg-white shadow-md fixed w-full z-50">
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-//         <div className="flex justify-between h-16">
-//           {/* Logo */}
-//           <div className="flex-shrink-0 flex items-center">
-//             <Link href="/">
-//               <span className="text-2xl font-bold text-indigo-600">MyApp</span>
-//             </Link>
-//           </div>
-
-//           {/* Desktop Links */}
-//           <div className="hidden md:flex space-x-6 items-center">
-//             {navLinks.map((link) => (
-//               <Link
-//                 key={link.name}
-//                 href={link.href}
-//                 className="text-gray-700 hover:text-indigo-600 font-medium"
-//               >
-//                 {link.name}
-//               </Link>
-//             ))}
-//            <Button> <Link href={"/login"}>Login</Link></Button>
-//           </div>
-
-//           {/* Mobile Menu Button */}
-//           <div className="flex items-center md:hidden">
-//             <button
-//               onClick={() => setIsOpen(!isOpen)}
-//               className="p-2 rounded-md text-gray-700 hover:text-indigo-600 hover:bg-gray-100"
-//             >
-//               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Mobile Menu */}
-//       {isOpen && (
-//         <div className="md:hidden bg-white shadow-md">
-//           <div className="px-2 pt-2 pb-3 space-y-1">
-//             {navigation.map((item) => (
-//               <Link
-//                 key={item.name}
-//                 href={item.href}
-//                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-indigo-600 hover:bg-gray-100"
-//                 onClick={() => setIsOpen(false)}
-//               >
-//                 {item.name}
-//               </Link>
-//             ))}
-//             <Button className="w-full mt-2">Login</Button>
-//           </div>
-//         </div>
-//       )}
-//     </nav>
-//   );
-// };
-
-
 
 "use client";
 
@@ -88,16 +12,37 @@ import {
 } from "@/components/ui/sheet";
 
 import { Menu } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getUser,UserLogOut } from "@/services/auth";
 
-const navLinks = [
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [user,setUser]=useState(null);
+  const [loading,setLoading]=useState(false);
+
+  const navLinks = [
   { name: "Home", href: "/" },
   { name: "Courses", href: "/courses" },
   { name: "Services", href: "/services" },
   { name: "About", href: "/about" },
 ];
 
-export default function Navbar() {
-  const pathname = usePathname();
+ const pathname = usePathname();
+
+useEffect(()=>{
+    const getCurrentUser=async()=>{
+      const userData= await getUser();
+      setUser(userData);
+    };
+    getCurrentUser();
+  },[loading])
+
+  const handleLogout=()=>{
+    UserLogOut();
+    setLoading(true)
+  }
+
+
 
   return (
     <nav className="w-full border-b bg-white sticky top-0 z-50">
@@ -124,8 +69,10 @@ export default function Navbar() {
             </Link>
           ))}
 
+      {user?(<Button onClick={handleLogout}>LogOut</Button>):
+        (<Link href={"/login"}><Button>Login</Button></Link>)}
           {/* <Button>Login</Button> */}
-          <Button> <Link href={"/login"}>Login</Link></Button>
+          {/* <Button> <Link href={"/login"}>Login</Link></Button> */}
         </div>
 
         {/* Mobile Menu */}
@@ -162,3 +109,137 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+
+// "use client";
+
+// import Link from "next/link";
+// import { useEffect, useState } from "react";
+// import { usePathname, useRouter } from "next/navigation";
+// import { Menu } from "lucide-react";
+
+// import { Button } from "@/components/ui/button";
+// import {
+//   Sheet,
+//   SheetContent,
+//   SheetTrigger,
+// } from "@/components/ui/sheet";
+
+// import { getUser, } from "@/services/auth";
+
+// export default function Navbar() {
+//   const pathname = usePathname();
+//   const router = useRouter();
+
+//   const [open, setOpen] = useState(false);
+//   const [user, setUser] = useState<any>(null);
+
+//   const navLinks = [
+//     { name: "Home", href: "/" },
+//     { name: "Services", href: "/services" },
+//     { name: "About", href: "/about-us" },
+//     { name: "Contact", href: "/contact" },
+//   ];
+
+//   // 🔥 Load user
+//   useEffect(() => {
+//     const loadUser = async () => {
+//       const data = await getUser();
+//       setUser(data);
+//     };
+
+//     loadUser();
+//   }, []);
+
+//   // 🔥 Logout
+//   // const handleLogout = async () => {
+//   //   await UserLogOut();
+//   //   setUser(null);
+//   //   router.push("/login");
+//   // };
+
+//   return (
+//     <header className="border-b bg-white sticky top-0 z-50">
+//       <div className="container mx-auto flex h-16 items-center justify-between px-4">
+
+//         {/* Logo */}
+//         <Link href="/" className="text-xl font-bold">
+//           SkillBridge
+//         </Link>
+
+//         {/* Desktop Menu */}
+//         <nav className="hidden md:flex items-center gap-6">
+//           {navLinks.map((link) => (
+//             <Link
+//               key={link.name}
+//               href={link.href}
+//               className={`text-sm font-medium transition-colors ${
+//                 pathname === link.href
+//                   ? "text-black font-bold"
+//                   : "text-gray-500 hover:text-black"
+//               }`}
+//             >
+//               {link.name}
+//             </Link>
+//           ))}
+
+//           {user ? (
+//             <Button onClick={handleLogout}>Logout</Button>
+//           ) : (
+//             <Link href="/login">
+//               <Button>Login</Button>
+//             </Link>
+//           )}
+//         </nav>
+
+//         {/* Mobile Menu */}
+//         <div className="md:hidden">
+//           <Sheet open={open} onOpenChange={setOpen}>
+//             <SheetTrigger asChild>
+//               <Button variant="ghost" size="icon">
+//                 <Menu className="h-5 w-5" />
+//               </Button>
+//             </SheetTrigger>
+
+//             <SheetContent side="right" className="w-64">
+//               <div className="flex flex-col gap-6 mt-6">
+
+//                 {/* Links */}
+//                 {navLinks.map((link) => (
+//                   <Link
+//                     key={link.name}
+//                     href={link.href}
+//                     onClick={() => setOpen(false)}
+//                     className={`text-sm font-medium ${
+//                       pathname === link.href
+//                         ? "text-black font-bold"
+//                         : "text-gray-500"
+//                     }`}
+//                   >
+//                     {link.name}
+//                   </Link>
+//                 ))}
+
+//                 {/* Auth Buttons */}
+//                 {user ? (
+//                   <Button
+//                     onClick={handleLogout}
+//                     className="w-full"
+//                   >
+//                     Logout
+//                   </Button>
+//                 ) : (
+//                   <Link href="/login">
+//                     <Button className="w-full">Login</Button>
+//                   </Link>
+//                 )}
+//               </div>
+//             </SheetContent>
+//           </Sheet>
+//         </div>
+
+//       </div>
+//     </header>
+//   );
+// }

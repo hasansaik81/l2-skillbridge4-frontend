@@ -16,16 +16,3 @@ const page = () => {
 export default page
 
 
-// import LoginForm from "@/components/modules/auth/login/LoginForm";
-
-// const page = () => {
-//   return (
-//     <div className="container mx-auto px-4">
-//       <div className="min-h-[80vh] flex items-center justify-center">
-//         <LoginForm />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default page;

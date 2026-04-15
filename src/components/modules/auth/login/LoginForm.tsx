@@ -27,6 +27,7 @@ import {
  
 } from "@/components/ui/input-group"
 import { loginUser } from "@/services/auth"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email: z.email({message:"Please enter a valid email address."}),
@@ -36,6 +37,7 @@ password: z.string(),
     
 
 export function LoginForm() {
+  const router=useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,14 +51,14 @@ console.log("FORM DATA", data)
     try{
        const res=await loginUser(data);
         if(res?.success){
-          toast.success("Login successful!")
-         
+          toast.success(res.message);
+          router.push("/");
         }else{
-          toast.error(res?.message || "Login failed. Please try again.")
+          toast.success(res?.message || "Login failed. Please try again.")
         }
 
     }catch(error:any){
-      toast.error(error)
+      toast.error(error.message || "An error occurred during login. Please try again.")
 
     }
   }
