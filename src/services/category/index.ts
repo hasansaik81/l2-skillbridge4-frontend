@@ -10,6 +10,9 @@ export const getAllCategory= async()=>{
             headers:{
                 "Content-Type":"aplication/jsin",
             },
+            next:{
+                revalidate:3600
+            }
             
         }
      );
@@ -19,3 +22,5 @@ export const getAllCategory= async()=>{
         return Error(error)
     }
 };
+
+
