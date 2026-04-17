@@ -4,6 +4,7 @@ import { getAllCategory } from '@/services/category'
 
 const page = async() => {
     const {data}= await getAllCategory()
+    console.log(data)
     
   return (
     <div>
