@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { createBooking } from "@/services/booking";
 import BookingModal, { BookingFormValues } from "./BookingModal";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getOwnSubjects } from "@/services/subjects";
 
 
 interface CategoryDetailsProps {
@@ -21,40 +23,92 @@ interface CategoryDetailsProps {
 export default function CategoryDetails({ category,user }: CategoryDetailsProps) {
   const { title, price, description, mentor } = category;
 
- const subject = [
-    { id: "639507f2-086a-4397-ac2f-71be7c5bf330", name: "Fluffy" },
-    { id: "639507f2-086a-4397-ac2f-71be7c5bf331", name: "Bella" },
-  ];
+//  const subject = [
+//     { id: "639507f2-086a-4397-ac2f-71be7c5bf330", name: "Fluffy" },
+//     { id: "639507f2-086a-4397-ac2f-71be7c5bf331", name: "Bella" },
+//   ];
 
-  const router = useRouter(); // ✅ এখানে থাকবে
+const router = useRouter(); 
+
+const [subject,setSubject]=useState([])
+
+// useEffect(()=>{
+//   const fetchSubjects=async()=>{
+//     const {data}= await getOwnSubjects();
+//     console.log("Full Response from Server:", data);
+//     setSubject(data);
+//   }
+//   fetchSubjects();
+// }, [])
+
+
+// useEffect(() => {
+//   const fetchSubjects = async () => {
+//     try {
+//       const res = await getOwnSubjects();
+      
+//       // ডিবাগ করার জন্য পুরো রেসপন্সটি দেখুন
+//       console.log("Full API Response:", res);
+
+//       // ১. যদি ডাটা res.data এর ভেতরে থাকে
+//       if (res && res.success && Array.isArray(res.data)) {
+//         setSubject(res.data);
+//       } 
+//       // ২. যদি রেসপন্স নিজেই সরাসরি একটি অ্যারে হয়
+//       else if (Array.isArray(res)) {
+//         setSubject(res);
+//       }
+//       // ৩. যদি ডাটা res.result বা অন্য কোথাও থাকে (আপনার ব্যাকএন্ড অনুযায়ী)
+//       else if (res?.data) {
+//         setSubject(res.data);
+//       }
+//     } catch (error) {
+//       console.error("Error fetching subjects:", error);
+//       setSubject([]); // এরর হলে খালি অ্যারে সেট করুন যাতে ড্রপডাউন ক্রাশ না করে
+//     }
+//   };
+//   fetchSubjects();
+// }, []);
+
+
+useEffect(() => {
+  const fetchSubjects = async () => {
+    try {
+      const res = await getOwnSubjects();
+
+      if (res && res.success && Array.isArray(res.data)) {
+        const formatted = res.data.map((item: any) => ({
+          id: item.id || item._id,
+          name: item.name || item.title,
+        }));
+
+        setSubject(formatted);
+      }
+    } catch (error) {
+      console.error("Error fetching subjects:", error);
+      setSubject([]);
+    }
+  };
+
+  fetchSubjects();
+}, [])
+
+
 
 async function handleBooking(data: BookingFormValues) {
-
-
-  // ১. পেলোড তৈরি (SkillBridge Schema অনুযায়ী)
-  // const payload = {
-  //   studentId: user?.id,          // লগইন করা ইউজারের আইডি (Student)
-  //   tutorId: category?.tutorId,    // যে টিউটরের সার্ভিস বুক করা হচ্ছে
-  //   categoryId: category?.id,      // নির্দিষ্ট কোর্সের বা ক্যাটাগরির আইডি
-  //   startDate: new Date(data.startDate).toISOString(),
-  //   endDate: new Date(data.endDate).toISOString(),
-  //   notes: data.notes,
-  // };
-  
 
 const payload = {
   studentId: user?.id,
   tutorId: category?.tutorId,
+  subjectId:data?.subjectId,
   categoryId: category?.id,
   startDate: new Date(data.startDate).toISOString(),
   endDate: new Date(data.endDate).toISOString(),
   notes: data.notes,
 };
 
-console.log("USER:", user);
-console.log("CATEGORY:", category);
-console.log("SELECTED:", category?.[0]);
-  // console.log("Submitting Booking Payload:", payload);
+
+  console.log("Submitting Booking Payload:", payload);
 
   try {
     // ২. API কল
