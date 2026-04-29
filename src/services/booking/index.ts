@@ -3,25 +3,59 @@
 import { cookies } from "next/headers";
 
 
-export const createBooking= async (bookingData:any) => {
+// export const createBooking= async (bookingData:any) => {
+//   try {
+//     const store= await cookies();
+//     const token =store.get("token")?.value
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization:token!,
+//         },
+//        body:JSON.stringify(bookingData)
+//       },
+//     );
+//     const result = await res.json();
+
+//     return result;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+
+export const createBooking = async (bookingData: any) => {
   try {
-    const store= await cookies();
-    const token =store.get("token")?.value
+    const store = await cookies();
+    const token = store.get("token")?.value;
+
+    if (!token) {
+      return {
+        success: false,
+        message: "Login করা নেই"
+      };
+    }
+
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/public`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:token!,
+          Authorization: `Bearer ${token}`, // ✅ MUST
         },
-       body:JSON.stringify(bookingData)
-      },
+        body: JSON.stringify(bookingData),
+      }
     );
-    const result = await res.json();
 
+    const result = await res.json();
     return result;
-  } catch (error: any) {
-    return Error(error);
+
+  } catch (error) {
+    console.error(error);
   }
 };

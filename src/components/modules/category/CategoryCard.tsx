@@ -47,7 +47,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
           <Button className="w-full sm:w-1/2">Book Now</Button>
 
           {/* আন্ডারলাইন এরর দিলে সরাসরি Link এর ভেতর Button রাখুন */}
-          <Link href={`/services/${category.id}`} className="w-full sm:w-1/2">
+          <Link href={`/categories/${category.id}`} className="w-full sm:w-1/2">
             <Button variant="outline" className="w-full bg-black text-white hover:bg-slate-800">
               View Details
             </Button>

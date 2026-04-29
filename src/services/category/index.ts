@@ -24,10 +24,10 @@ export const getAllCategory = async () => {
   }
 };
 
-export const getPublicSingleCategory= async () => {
+export const getPublicSingleCategory= async (id: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/category/public`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/category/public/${id}`,
       {
         method: "GET",
         headers: {

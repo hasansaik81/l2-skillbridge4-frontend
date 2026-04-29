@@ -5,6 +5,7 @@ import { getAllCategory } from "@/services/category";
 
 export default async function Home() {
   const { data } = await getAllCategory();
+  console.log(data)
 
   return (
     <div className="space-y-10">

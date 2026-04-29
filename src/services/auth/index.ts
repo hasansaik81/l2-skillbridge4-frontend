@@ -1,7 +1,8 @@
 
 "use server";
 import { jwtDecode } from "jwt-decode";
-import { cookies } from "next/dist/server/request/cookies";
+import { cookies } from "next/headers";
+// import { cookies } from "next/dist/server/request/cookies";
 import { FieldValues } from "react-hook-form";
 
 export const loginUser=async(userData:FieldValues)=>{

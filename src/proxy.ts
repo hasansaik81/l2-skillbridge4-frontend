@@ -44,6 +44,35 @@ export const config = {
   ],
 };
 
+// import { NextResponse } from 'next/server'
+// import type { NextRequest } from 'next/server'
+// import { getUser } from './services/auth'
+
+// // ফাংশনটির নাম অবশ্যই 'proxy' হতে হবে এবং তার আগে 'export' থাকতে হবে
+// export async function proxy(request: NextRequest) {
+//     const { pathname, origin } = request.nextUrl
+//     const user = await getUser()
+
+//     // আপনার বাকি লজিক...
+//     const PUBLIC_ROUTE = ["/login", "/register"];
+//     if (PUBLIC_ROUTE.includes(pathname)) {
+//         return NextResponse.next();
+//     }
+
+//     if (!user) {
+//         return NextResponse.redirect(new URL(`/login?redirect=${pathname}`, origin))
+//     }
+
+//     return NextResponse.next()
+// }
+
+// export const config = {
+//   matcher: [
+//     "/dashboard/:path*", 
+//     "/profile/:path*", 
+//     "/booking/:path*"
+//   ],
+// }
 
 
 // import { NextResponse } from "next/server";
