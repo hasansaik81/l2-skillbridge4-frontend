@@ -36,7 +36,7 @@ export const createBooking = async (bookingData: any) => {
     if (!token) {
       return {
         success: false,
-        message: "Login করা নেই"
+        message: "Not Logged In"
       };
     }
 
@@ -46,7 +46,7 @@ export const createBooking = async (bookingData: any) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // ✅ MUST
+          Authorization: `Bearer ${token}`, 
         },
         body: JSON.stringify(bookingData),
       }
