@@ -1,4 +1,4 @@
-// /* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";

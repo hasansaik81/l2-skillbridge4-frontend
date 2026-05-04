@@ -10,6 +10,7 @@ export const getAllCategory = async () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          
         },
         next: {
           revalidate: 3600,
@@ -32,6 +33,7 @@ export const getPublicSingleCategory= async (id: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          
         },
         next: {
           revalidate: 3600,
