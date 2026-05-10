@@ -59,3 +59,56 @@ export const createBooking = async (bookingData: any) => {
     console.error(error);
   }
 };
+
+
+
+
+
+// export const getSingleBooking = async (bookingId: string) => {
+//   try {
+//     const store = await cookies();
+//     const token = store.get("token")?.value;
+
+//     if (!token) {
+//       return {
+//         success: false,
+//         message: "Not Logged In",
+//       };
+//     }
+
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${bookingId}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//         cache: "no-store", // 🔥 important for fresh data
+//       }
+//     );
+
+//     const result = await res.json();
+//     return result;
+
+//   } catch (error) {
+//     console.error(error);
+//     return {
+//       success: false,
+//       message: "Something went wrong",
+//     };
+//   }
+// };
+
+
+export const getSingleBooking = async (bookingId: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${bookingId}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch booking");
+  }
+
+  return res.json();
+};
