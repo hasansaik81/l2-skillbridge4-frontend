@@ -26,13 +26,6 @@ export async function proxy(request: NextRequest) {
   return NextResponse.next()
 }
  
-// Alternatively, you can use a default export:
-// export default function proxy(request: NextRequest) { ... }
- 
-// export const config = {
-//   matcher: 
-//   ["/dashboard/:path*", "/profile/:path*"],
-// }
 
 
 export const config = {

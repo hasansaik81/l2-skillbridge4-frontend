@@ -62,7 +62,7 @@ export default function BookingModal({ subjects = [], onSubmit }: BookingModalPr
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={subjects.length === 0} variant="outline">
+        <Button className="w-full bg-black text-white hover:bg-gray-800 py-6 roounded-xl" disabled={subjects.length === 0} variant="outline">
           {subjects.length === 0 ? "No subjects available" : "Book Service"}
         </Button>
       </DialogTrigger>
